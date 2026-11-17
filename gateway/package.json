@@ -1,0 +1,17 @@
+{
+  "name": "replicore-gateway",
+  "version": "1.0.0",
+  "description": "Gateway: finds the RAFT leader, forwards strokes, pushes updates to browsers",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  }
+}

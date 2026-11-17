@@ -1,0 +1,47 @@
+# One command starts everything:   docker compose up --build
+# Then open http://localhost:3000
+#
+# 3 replicas  +  1 gateway (which also serves the web page)
+# Inside Docker, containers find each other by service name (http://replica1:5000).
+
+services:
+  replica1:
+    build: ./replica
+    environment:
+      - NODE_ID=node1
+      - PORT=5000
+      - PEERS=http://replica2:5000,http://replica3:5000
+    ports:
+      - "5001:5000"     # so you can also visit http://localhost:5001/status
+
+  replica2:
+    build: ./replica
+    environment:
+      - NODE_ID=node2
+      - PORT=5000
+      - PEERS=http://replica1:5000,http://replica3:5000
+    ports:
+      - "5002:5000"
+
+  replica3:
+    build: ./replica
+    environment:
+      - NODE_ID=node3
+      - PORT=5000
+      - PEERS=http://replica1:5000,http://replica2:5000
+    ports:
+      - "5003:5000"
+
+  gateway:
+    build:
+      context: .                 # project root, so it can copy the frontend folder
+      dockerfile: gateway/Dockerfile
+    environment:
+      - PORT=3000
+      - REPLICAS=http://replica1:5000,http://replica2:5000,http://replica3:5000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - replica1
+      - replica2
+      - replica3

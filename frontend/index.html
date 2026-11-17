@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RepliCore</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>RepliCore <span>fault-tolerant shared board</span></h1>
+    <div id="connection" class="pill">Connecting…</div>
+  </header>
+
+  <main>
+    <!-- Left: the shared drawing board -->
+    <section class="board">
+      <div class="toolbar">
+        <label>Color <input id="color" type="color" value="#2563eb"></label>
+        <label>Size <input id="size" type="range" min="1" max="20" value="4"></label>
+        <button id="clear">Clear board</button>
+        <span id="message"></span>
+      </div>
+      <canvas id="canvas"></canvas>
+      <p class="hint">Open this page in 2–3 tabs and draw. Every stroke goes through the RAFT leader before the other tabs see it.</p>
+    </section>
+
+    <!-- Right: what the cluster is doing -->
+    <aside class="cluster">
+      <h2>Cluster</h2>
+      <div id="nodes"></div>
+      <p class="hint">
+        <b>Crash</b> the leader and watch a new one get elected.<br>
+        Crash <b>two</b> nodes and drawing stops: no majority, nothing can be committed.
+      </p>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
